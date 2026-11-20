@@ -105,10 +105,10 @@ kbd {
 /* per-workspace tiling layouts */
 .ws-about    { grid-template-columns: 1.35fr 1fr; grid-template-rows: auto auto minmax(0,1fr); }
 .ws-about .p-fetch  { grid-column: 1; grid-row: 1; }
-.ws-about .p-bio    { grid-column: 1; grid-row: 2 / span 2; }
+.ws-about .p-bio    { grid-column: 1; grid-row: 2; }
+.ws-about .p-log    { grid-column: 1; grid-row: 3; }
 .ws-about .p-links  { grid-column: 2; grid-row: 1; }
-.ws-about .p-photos { grid-column: 2; grid-row: 2; }
-.ws-about .p-log    { grid-column: 2; grid-row: 3; }
+.ws-about .p-photos { grid-column: 2; grid-row: 2 / span 2; }
 .ws-research, .ws-talks { grid-template-columns: minmax(0,1fr) minmax(0,1.25fr); }
 .ws-pubs     { grid-template-columns: minmax(0,2.2fr) minmax(0,1fr); }
 .ws-skills   { grid-template-columns: minmax(0,1.4fr) minmax(0,1fr); grid-template-rows: minmax(0,1.3fr) minmax(0,1fr); }
@@ -180,13 +180,15 @@ kbd {
 }
 .photo.headshot { width: 190px; flex: none; border: 1px solid var(--border); }
 .fig { margin: 14px 0 4px; }
-.fig .photo { border: 1px solid var(--border); }
+.fig .photo { border: 1px solid var(--border); max-width: 560px; }
 .fig .cap, .thumb .cap { display: block; color: var(--muted); font-size: .85em; margin-top: 4px; }
 
 .gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .thumb { display: flex; flex-direction: column; justify-content: flex-start; background: none; border: 0; padding: 0; text-align: left; cursor: zoom-in; color: inherit; font-size: .92em; }
 .thumb .photo { border: 1px solid var(--border); }
 .thumb:hover .photo, .thumb:focus-visible .photo { border-color: var(--accent); }
+.thumb .cap { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+.chip.more { margin-top: 10px; }
 
 .lightbox { width: min(1100px, calc(100vw - 32px)); max-height: 90vh; padding: 26px 14px 12px; }
 .lightbox img { display: block; width: 100%; max-height: 72vh; object-fit: contain; background: var(--bg-alt); }
@@ -395,7 +397,11 @@ mark { background: var(--yellow); color: var(--bg); }
     height: auto; grid-template-columns: minmax(0,1fr); grid-template-rows: none; grid-auto-rows: auto;
   }
   .photo.headshot { width: min(240px, 70vw); }
+  /* phone reading order: who → how to reach → bio → photos → activity */
+  .ws-about .p-fetch { order: 1; } .ws-about .p-links { order: 2; } .ws-about .p-bio { order: 3; }
+  .ws-about .p-photos { order: 4; } .ws-about .p-log { order: 5; }
   .gallery { grid-template-columns: 1fr 1fr; }
+  .thumb .cap { -webkit-line-clamp: 2; }
   .lb-bar { grid-template-columns: 1fr 1fr; }
   .lb-cap { grid-column: 1 / -1; grid-row: 1; }
   .ws-about .p-fetch, .ws-about .p-bio, .ws-about .p-photos, .ws-about .p-links, .ws-about .p-log, .ws-skills .p-btop {

@@ -145,7 +145,7 @@
       const fetch = `
         <h1 class="hero">${esc(p.name)}<small>${esc(p.role)} · ${esc(p.org)}</small></h1>
         <div class="fetch">
-          ${p.photo ? photoFig({ src: p.photo, alt: `Photo of ${p.name}` }, 'headshot', '4/5', 'onerror')
+          ${p.photo ? photoFig({ src: p.photo, alt: `Photo of ${p.name}` }, 'headshot', '1/1', 'onerror')
             : `<pre class="helix" id="helix" aria-hidden="true" title="a rotating DNA helix; yellow C's are methylated CpGs"></pre>`}
           <div class="fetch-info">
             <div class="who"><span class="u">${esc(p.short || 'me')}</span>@<span class="h">${esc(p.host || 'lab')}</span></div>
@@ -300,8 +300,12 @@
     return `<div class="fig">${photoFig(im, 'science')}${im.caption ? `<div class="cap">${esc(im.caption)}</div>` : ''}</div>`;
   }
   function renderGallery() {
-    return `<div class="gallery">${S.gallery.map((g, i) => `<button class="thumb" data-lightbox="${i}" aria-label="Open photo: ${esc(g.caption || g.alt || '')}">
-        ${photoFig(g, '', '3/2').replace(' tabindex="0"', '')}<span class="cap">${esc(g.caption || '')}</span></button>`).join('')}</div>`;
+    const SHOW = 6;                       // thumbnails on the home page; the rest via the lightbox
+    const thumbs = S.gallery.slice(0, SHOW).map((g, i) => `<button class="thumb" data-lightbox="${i}" aria-label="Open photo: ${esc(g.caption || g.alt || '')}">
+        ${photoFig(g, '', '4/3').replace(' tabindex="0"', '')}<span class="cap">${esc(g.caption || '')}</span></button>`).join('');
+    const more = S.gallery.length > SHOW
+      ? `<button class="chip more" data-lightbox="${SHOW}">▸ all ${S.gallery.length} photos</button>` : '';
+    return `<div class="gallery">${thumbs}</div>${more}`;
   }
 
   const hexRgb = (h) => { h = h.replace('#', ''); if (h.length === 3) h = [...h].map((c) => c + c).join(''); const n = parseInt(h, 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
@@ -312,7 +316,7 @@
     if (!img || !cv) return;
     const run = () => {
       if (!img.naturalWidth) return;
-      const cell = fig.closest('.thumb') ? 1.5 : 2;                       // screen px per dither dot
+      const cell = fig.closest('.thumb') || fig.classList.contains('headshot') ? 1.5 : 2;   // screen px per dither dot
       const box = fig.getBoundingClientRect().width || 240;
       const w = Math.max(48, Math.round(box / cell));
       const [aw, ah] = (fig.dataset.aspect || '').split('/').map(Number);
@@ -328,11 +332,23 @@
       g.drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
       const data = g.getImageData(0, 0, w, h), px = data.data;
       // luminance + auto-levels so dark or washed-out photos still dither nicely
-      const Lm = new Float32Array(w * h);
-      let lo = 255, hi = 0;
-      for (let k = 0; k < Lm.length; k++) { const v = lum([px[4 * k], px[4 * k + 1], px[4 * k + 2]]); Lm[k] = v; if (v < lo) lo = v; if (v > hi) hi = v; }
-      const span = Math.max(1, hi - lo);
-      for (let k = 0; k < Lm.length; k++) Lm[k] = Math.min(1, Math.max(0, ((Lm[k] - lo) / span - 0.5) * 1.12 + 0.52));
+      const Lm = new Float32Array(w * h), hist = new Uint32Array(256);
+      for (let k = 0; k < Lm.length; k++) { const v = lum([px[4 * k], px[4 * k + 1], px[4 * k + 2]]); Lm[k] = v; hist[v | 0]++; }
+      // robust levels: 3rd–99th percentile, then a gamma curve that sinks flat midtones
+      // (studio backdrops, walls) into the dark tone so faces and highlights carry the image
+      const pct = (q) => { let acc = 0; for (let v = 0; v < 256; v++) { acc += hist[v]; if (acc >= q * Lm.length) return v; } return 255; };
+      const lo = pct(0.03), hi = Math.max(lo + 1, pct(0.99)), gamma = 1.3;
+      for (let k = 0; k < Lm.length; k++) Lm[k] = Math.pow(Math.min(1, Math.max(0, (Lm[k] - lo) / (hi - lo))), gamma);
+      // unsharp mask (3×3 box blur) so edges — hair, glasses, jawlines — survive the dithering
+      const blur = new Float32Array(Lm.length);
+      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+        let sum = 0, n = 0;
+        for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+          const xx = x + dx, yy = y + dy; if (xx >= 0 && xx < w && yy >= 0 && yy < h) { sum += Lm[yy * w + xx]; n++; }
+        }
+        blur[y * w + x] = sum / n;
+      }
+      for (let k = 0; k < Lm.length; k++) Lm[k] = Math.min(1, Math.max(0, Lm[k] + 0.9 * (Lm[k] - blur[k])));
       // Atkinson dithering (classic Macintosh look): diffuses 6/8 of the error, keeps faces readable
       const ink = hexRgb(cssVar('--fg')), paper = hexRgb(cssVar('--pane'));
       const [bright, dark] = lum(ink) > lum(paper) ? [ink, paper] : [paper, ink];

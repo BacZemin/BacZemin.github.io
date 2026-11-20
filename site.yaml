@@ -70,16 +70,60 @@ links:
 #  Put image files in assets/img/photos/ (JPEG, ~1400px on the long side, < 400 KB).
 #  Shown dithered; hover/tap reveals the colour photo; click opens it full size.
 gallery:
+  # Order here = order on the site. The home page shows the first 6; "all photos" opens the rest.
+  # caption: what/where/when · alt: describes the photo for screen readers · credit: photographer (optional)
+  - src: "assets/img/photos/bioc2025-talk.jpg"
+    caption: "Talk on deep-learning epigenetic clocks in {torch}, BioC2025 · Jun 2025"
+    alt: "Jamie presenting a talk titled Leveraging Deep Learning with torch for Next-Generation Epigenetic Clocks to a seated audience"
+  - src: "assets/img/photos/epigenetics-society-2025-poster.jpg"
+    caption: "Poster, Epigenetics Society International Conference · Oct 2025"     # TODO verify event
+    alt: "Jamie standing beside a research poster at a conference poster session"
+  - src: "assets/img/photos/grc-aging-2026-poster.jpg"
+    caption: "Poster session, Gordon Research Conference: Biology of Aging · Jun 2026"   # TODO verify event
+    alt: "Selfie of Jamie with two colleagues in front of a Van Andel Institute poster"
   - src: "assets/img/photos/laird-lab-2025.jpg"
     caption: "Laird Lab, 2025"
     alt: "Group photo of the Laird Lab on the lawn outside the Van Andel Institute, 2025"
+  - src: "assets/img/photos/prf-2025-a.jpg"
+    caption: "Progeria Research Foundation Scientific Workshop · Oct 2025"         # TODO add who's in the photo
+    alt: "Selfie of Jamie with a conference speaker at the Progeria Research Foundation workshop"
+  - src: "assets/img/photos/grc-aging-2026.jpg"
+    caption: "Gordon Research Conference: Biology of Aging · Jun 2026"            # TODO add who's in the photo
+    alt: "Selfie of Jamie with a fellow attendee at the Gordon Research Conference"
+  - src: "assets/img/photos/prf-2025-b.jpg"
+    caption: "Progeria Research Foundation Scientific Workshop · Oct 2025"         # TODO add who's in the photo
+    alt: "Selfie of Jamie with a fellow attendee at the Progeria Research Foundation workshop"
+  - src: "assets/img/photos/2026-10-visit-a.jpg"
+    caption: "Oct 2026"                                                            # TODO add context / names
+    alt: "Jamie standing with a scientist in an office"
+  - src: "assets/img/photos/2026-10-visit-b.jpg"
+    caption: "Oct 2026"                                                            # TODO add context / names
+    alt: "Jamie standing with a scientist in an office"
+  - src: "assets/img/photos/2026-10-visit-c.jpg"
+    caption: "Oct 2026"                                                            # TODO add context / names
+    alt: "Selfie of Jamie with two scientists in a hallway"
+  - src: "assets/img/photos/2025-10-dinner.jpg"
+    caption: "Conference dinner · Oct 2025"                                       # TODO add event
+    alt: "Jamie and colleagues around a dinner table with lobster"
+  - src: "assets/img/photos/2025-10-lunch.jpg"
+    caption: "Oct 2025"                                                            # TODO add event
+    alt: "Jamie with a group of colleagues standing by a lunch table in an atrium"
+  - src: "assets/img/photos/vai-event-2025-09.jpg"
+    caption: "Van Andel Institute · Sep 2025"                                      # TODO add event
+    alt: "Jamie standing between two colleagues at an event"
+  - src: "assets/img/photos/vai-poster-2025-08.jpg"
+    caption: "Poster at the Van Andel Institute · Aug 2025"                        # TODO add event
+    alt: "Two people presenting a Van Andel Institute poster on an easel"
+  - src: "assets/img/photos/lab-dinner-2025-07.jpg"
+    caption: "Dinner with labmates · Jul 2025"
+    alt: "Selfie of Jamie with colleagues at an outdoor restaurant table"
+  - src: "assets/img/photos/faseb-methylation-2024.jpg"
+    caption: "FASEB Biological Methylation conference, Porto · 2024"
+    alt: "Conference group photo of attendees on a staircase, FASEB Biological Methylation 2024, Porto"
   - src: "assets/img/photos/laird-lab-2023.jpg"
     caption: "Laird Lab, 2023"
     alt: "Group photo of the Laird Lab outside the Van Andel Institute, 2023"
-    credit: "Van Andel Institute"                                  # TODO verify photo credit
-  - src: "assets/img/photos/faseb-methylation-2024.jpg"
-    caption: "FASEB Biological Methylation conference, Porto, 2024"
-    alt: "Conference group photo of attendees on a staircase, FASEB Biological Methylation 2024, Porto"
+    credit: "Terry Ballard, VAI"
 
 # ── Research projects ───────────────────────────────────────────────────
 #  kind: thesis | software | side
@@ -250,6 +294,7 @@ talks:
     slug: grc2026
     title: "Poster presentation"                                 # TODO add poster title
     venue: "Gordon Research Conference: Biology of Aging"
+    image: { src: "assets/img/photos/grc-aging-2026-poster.jpg", caption: "Poster session" }
 
   - date: 2026-05-11
     type: poster
@@ -273,6 +318,7 @@ talks:
     slug: epigenetics-society-2025
     title: "Interpretable deep learning for the next generation of epigenetic clocks and mechanistic discovery"
     venue: "Epigenetics Society International Conference 2025"
+    image: { src: "assets/img/photos/epigenetics-society-2025-poster.jpg", caption: "At the poster" }
     award: "Travel Fellowship"
 
   - date: 2025-06
@@ -280,6 +326,7 @@ talks:
     slug: bioc2025
     title: "Leveraging deep-learning epigenetic clocks on {torch}"
     venue: "Bioconductor Conference 2025 (BioC2025)"
+    image: { src: "assets/img/photos/bioc2025-talk.jpg", caption: "Giving the talk, June 2025" }
     links:
       - { label: "repo", url: "https://github.com/BacZemin/Bioc2025_torch_clock" }
 
