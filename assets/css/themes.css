@@ -1,0 +1,151 @@
+/* ═══════════════════════════════════════════════════════════════
+   themes.css — colour palettes (Omarchy-style theme set)
+   To add a theme: copy a block, rename data-theme, and add the
+   name to THEMES in assets/js/app.js.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root,
+[data-theme="tokyo-night"] {
+  --bg:      #1a1b26;
+  --bg-alt:  #16161e;
+  --pane:    #1a1b26;
+  --fg:      #c0caf5;
+  --muted:   #7f88b3;
+  --border:  #3b4261;
+  --sel:     #283457;
+  --accent:  #7aa2f7;
+  --accent2: #bb9af7;
+  --green:   #9ece6a;
+  --yellow:  #e0af68;
+  --red:     #f7768e;
+  --cyan:    #7dcfff;
+  --orange:  #ff9e64;
+  --scheme:  dark;
+}
+
+[data-theme="catppuccin"] {
+  --bg:      #1e1e2e;
+  --bg-alt:  #181825;
+  --pane:    #1e1e2e;
+  --fg:      #cdd6f4;
+  --muted:   #9399b2;
+  --border:  #45475a;
+  --sel:     #313244;
+  --accent:  #89b4fa;
+  --accent2: #cba6f7;
+  --green:   #a6e3a1;
+  --yellow:  #f9e2af;
+  --red:     #f38ba8;
+  --cyan:    #94e2d5;
+  --orange:  #fab387;
+  --scheme:  dark;
+}
+
+[data-theme="gruvbox"] {
+  --bg:      #282828;
+  --bg-alt:  #1d2021;
+  --pane:    #282828;
+  --fg:      #ebdbb2;
+  --muted:   #a89984;
+  --border:  #504945;
+  --sel:     #3c3836;
+  --accent:  #d79921;
+  --accent2: #d3869b;
+  --green:   #b8bb26;
+  --yellow:  #fabd2f;
+  --red:     #fb4934;
+  --cyan:    #8ec07c;
+  --orange:  #fe8019;
+  --scheme:  dark;
+}
+
+[data-theme="nord"] {
+  --bg:      #2e3440;
+  --bg-alt:  #272c36;
+  --pane:    #2e3440;
+  --fg:      #e5e9f0;
+  --muted:   #a3acbd;
+  --border:  #4c566a;
+  --sel:     #3b4252;
+  --accent:  #88c0d0;
+  --accent2: #b48ead;
+  --green:   #a3be8c;
+  --yellow:  #ebcb8b;
+  --red:     #bf616a;
+  --cyan:    #8fbcbb;
+  --orange:  #d08770;
+  --scheme:  dark;
+}
+
+[data-theme="everforest"] {
+  --bg:      #2d353b;
+  --bg-alt:  #272e33;
+  --pane:    #2d353b;
+  --fg:      #d3c6aa;
+  --muted:   #9da9a0;
+  --border:  #475258;
+  --sel:     #3d484d;
+  --accent:  #a7c080;
+  --accent2: #d699b6;
+  --green:   #a7c080;
+  --yellow:  #dbbc7f;
+  --red:     #e67e80;
+  --cyan:    #83c092;
+  --orange:  #e69875;
+  --scheme:  dark;
+}
+
+[data-theme="kanagawa"] {
+  --bg:      #1f1f28;
+  --bg-alt:  #16161d;
+  --pane:    #1f1f28;
+  --fg:      #dcd7ba;
+  --muted:   #a6a69c;
+  --border:  #54546d;
+  --sel:     #2d4f67;
+  --accent:  #7e9cd8;
+  --accent2: #957fb8;
+  --green:   #98bb6c;
+  --yellow:  #e6c384;
+  --red:     #e46876;
+  --cyan:    #7fb4ca;
+  --orange:  #ffa066;
+  --scheme:  dark;
+}
+
+/* light themes — good for bright rooms and projectors */
+[data-theme="rose-pine-dawn"] {
+  --bg:      #faf4ed;
+  --bg-alt:  #f2e9e1;
+  --pane:    #fffaf3;
+  --fg:      #464261;
+  --muted:   #6e6a86;
+  --border:  #cecacd;
+  --sel:     #f2e9e1;
+  --accent:  #286983;
+  --accent2: #907aa9;
+  --green:   #3e7d63;
+  --yellow:  #a36a1e;
+  --red:     #b4637a;
+  --cyan:    #3a7f8c;
+  --orange:  #b8642a;
+  --scheme:  light;
+}
+
+[data-theme="catppuccin-latte"] {
+  --bg:      #eff1f5;
+  --bg-alt:  #e6e9ef;
+  --pane:    #f5f6f9;
+  --fg:      #4c4f69;
+  --muted:   #6c6f85;
+  --border:  #bcc0cc;
+  --sel:     #dce0e8;
+  --accent:  #1e66f5;
+  --accent2: #8839ef;
+  --green:   #2f7d1e;
+  --yellow:  #9a6200;
+  --red:     #d20f39;
+  --cyan:    #137e86;
+  --orange:  #c24e00;
+  --scheme:  light;
+}

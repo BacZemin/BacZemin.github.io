@@ -1,0 +1,321 @@
+# ═══════════════════════════════════════════════════════════════════════
+#  site.yaml — the ONLY file you need to edit to update the website.
+#
+#  Rules of thumb
+#   • Indentation is 2 spaces. Never use tabs.
+#   • Lists start with "- ". Copy an existing entry and edit it.
+#   • Quote any text that contains a colon followed by a space  ("a: b").
+#   • Order does not matter for pubs/talks — they are sorted by year/date.
+#   • Preview locally:  python3 -m http.server 8000   →  http://localhost:8000
+#   • Publish:          git commit -am "update" && git push
+#
+#  Lines marked  # TODO verify  are facts pulled from the vault that I
+#  could not confirm. Check them, then delete the comment.
+# ═══════════════════════════════════════════════════════════════════════
+
+profile:
+  name: "Jaemin (Jamie) Park"
+  url: "https://baczemin.github.io/"   # public address — QR codes point here
+  short: "jamie"                       # used in the prompt: jamie@vai
+  host: "vai"
+  role: "PhD Candidate · Bioinformatics & Epigenetics"
+  org: "Van Andel Institute Graduate School"
+  lab: "Laird Lab"
+  lab_url: "https://www.vai.org/"
+  location: "Grand Rapids, MI"
+  phd_start: 2022-08                   # drives the "uptime" line
+  tagline: "I read the epigenome for signs of aging, in progeria and in all of us."
+  focus:
+    - "DNA methylation"
+    - "3D chromatin"
+    - "HGPS / progeria"
+    - "epigenetic clocks"
+    - "Bayesian methods"
+  stack: "R · Python · Nextflow · SLURM · torch"
+  bio: |
+    I'm a computational biologist in Peter Laird's lab at the Van Andel Institute.
+    My thesis maps how a single mutant protein, progerin, rewires the epigenome
+    in Hutchinson-Gilford Progeria Syndrome (HGPS), and how far that rewiring
+    looks like normal aging. I combine DNA methylation arrays, whole-genome bisulfite
+    sequencing, Hi-C, CUT&Tag, ATAC-seq, transcriptomics, proteomics and AlphaFold3
+    structure prediction across mouse tissues, cell models and published datasets.
+
+    I also build open-source tools: Bayesian region-level methylation inference
+    (BREAD), a mouse epigenetic-age clock (MEAD), and interpretable deep-learning
+    clocks in R {torch}.
+
+    Before VAI I profiled Parkinson's disease brains in Sreeganga Chandra's lab
+    at Yale, and as an undergraduate at Franklin & Marshall I studied a rare
+    neurodevelopmental disorder in Lancaster Amish children.
+  # "now" — what you're up to (shows under contact on the home page). Keep it short.
+  now:
+    - "Writing up my thesis on epigenetic aging in progeria"            # TODO edit
+    - "First-author manuscript: progeria mouse methylome (in prep)"
+    - "BREAD: Bayesian region-level DNA methylation inference in R"
+    # - "Open to conversations about postdoc positions"                 # uncomment if true
+  avatar: "assets/img/logo.png"
+  cv: "assets/cv.pdf"
+
+links:
+  - { label: "email",   url: "mailto:jaemin.park@vai.org",                 text: "jaemin.park@vai.org" }
+  - { label: "github",  url: "https://github.com/BacZemin",                text: "BacZemin" }
+  - { label: "orcid",   url: "https://orcid.org/0000-0002-9770-7197",      text: "0000-0002-9770-7197" }
+  - { label: "scholar", url: "https://scholar.google.com/citations?user=2zQQGScAAAAJ", text: "Google Scholar" }   # TODO verify this is your profile
+  - { label: "x",       url: "https://x.com/BacZemin",                     text: "@BacZemin" }
+
+# ── Research projects ───────────────────────────────────────────────────
+#  kind: thesis | software | side
+#  links: optional list of { label, url }
+projects:
+  - id: hgps-vivo
+    title: "Progeria in vivo methylome"
+    kind: thesis
+    years: "2022–"
+    summary: "Multi-tissue DNA methylation in a knock-in Lmna G609G progeria mouse."
+    detail: |
+      Array (MM285) and whole-genome bisulfite profiling across tissues of a
+      CRISPR knock-in Lmna c.1827C>T mouse, integrated with RNA-seq, proteomics
+      and spatial transcriptomics. Progeria remodels the liver methylome at
+      enhancers while the aorta stays largely unchanged. First-author manuscript in
+      preparation.
+    tags: [MM285, WGBS, RNA-seq, proteomics, spatial]
+
+  - id: hgps-vitro
+    title: "Progerin and the 3D genome"
+    kind: thesis
+    years: "2022–"
+    summary: "Inducible progerin fibroblasts plus ~30 published HGPS datasets, integrated into one disease cascade."
+    detail: |
+      An inducible GFP-progerin fibroblast model profiled by Hi-C, CUT&Tag,
+      ATAC-seq, WGBS and EPIC arrays, alongside a uniform reprocessing of
+      published HGPS chromatin, methylation, transcriptome and proteome data.
+      Goal: order the events from nuclear-lamina defects to chromatin
+      reorganisation to transcriptional senescence.
+    tags: [Hi-C, CUT&Tag, ATAC-seq, EPIC, nf-core]
+
+  - id: hgps-silico
+    title: "Lamin A vs progerin interactome"
+    kind: thesis
+    years: "2025–"
+    summary: "Proteome-scale AlphaFold3 screen for interactions progerin loses, keeps or gains."
+    detail: |
+      Thousands of AlphaFold3 / Chai-1 / Boltz-2 predictions of lamin A and
+      progerin against candidate nuclear partners, scored at the interface
+      (ipTM, ipSAE, iLIS). These link structural changes to the chromatin
+      phenotypes measured in the in vitro and in vivo arms.
+    tags: [AlphaFold3, Chai-1, Boltz-2, GPU/HPC]
+
+  - id: serial-culture
+    title: "Replicative aging methylome"
+    kind: thesis
+    years: "2023–"
+    summary: "Primary cells serially cultured to senescence: coordinated drift or clonal takeover?"
+    detail: |
+      Longitudinal 5mC/5hmC profiling of primary cells passaged to replicative
+      senescence, testing whether age-associated methylation change comes from
+      coordinated drift across cells or from clonal expansion, and how vitamin C
+      perturbs it.
+    tags: [EPIC, 5hmC, single-cell methylation]
+
+  - id: dl-clocks
+    title: "Interpretable deep-learning clocks"
+    kind: side
+    years: "2024–"
+    summary: "MLP and graph neural network epigenetic clocks in R {torch}, explained with SHAP."
+    detail: |
+      Epigenetic-age models that go beyond penalised regression: multilayer
+      perceptrons and graph neural networks (GCN, GraphSAGE, PNA) trained in
+      R {torch}, with SHAP attributions to recover mechanistic signal. Presented
+      at BioC2025 and adapted into an Open Case Study.
+    tags: [torch, GNN, SHAP, R]
+    links:
+      - { label: "repo", url: "https://github.com/BacZemin/Bioc2025_torch_clock" }
+
+  - id: bread
+    title: "BREAD"
+    kind: software
+    years: "2026"
+    summary: "Bayesian Region-level Estimation of Altered DNA methylation: posterior probabilities instead of p-values, including an explicit 'unchanged' call."
+    detail: |
+      An R package for region-specific differential methylation that reports
+      posterior probabilities of change, with the effect size and uncertainty, and
+      can positively conclude that a region did *not* change.
+    tags: [R, Bayesian, Stan, Bioconductor-style]
+    links:
+      - { label: "docs", url: "https://baczemin.github.io/BREAD/" }
+      - { label: "repo", url: "https://github.com/BacZemin/BREAD" }
+
+  - id: mead
+    title: "MEAD"
+    kind: software
+    years: "2025"
+    summary: "Mouse Epigenetic Age Determination: a pan-tissue clock for MM285 arrays."
+    tags: [R, epigenetic clock, MM285]
+    links:
+      - { label: "repo", url: "https://github.com/BacZemin/MEAD" }
+
+  - id: nano2qubit
+    title: "nano2Qubit"
+    kind: software
+    years: "2025"
+    summary: "Predicts Qubit dsDNA concentration from cheaper Nanodrop readings."
+    tags: [R, lab utility]
+    links:
+      - { label: "repo", url: "https://github.com/BacZemin/nano2Qubit" }
+
+# ── Publications ────────────────────────────────────────────────────────
+#  status: published | preprint | in-prep | submitted
+#  Your name is auto-highlighted wherever "Park JM" appears in authors.
+publications:
+  - year: 2025
+    title: "Synaptic vesicle endocytosis deficits underlie GBA-linked cognitive dysfunction in Parkinson's disease and Dementia with Lewy bodies"
+    authors: "Vidyadhara DJ, Bäckström D, Chakraborty R, Ruan J, Park JM, Mistry PK, Chandra SS"
+    venue: "Nature Communications"
+    cite: "16(1):8484"
+    doi: "10.1038/s41467-025-63444-9"
+    status: published
+
+  - year: 2024
+    title: "Single-cell transcriptomic and proteomic analysis of Parkinson's disease brains"
+    authors: "Zhu B, Park JM, Coffey SR, Russo A, Hsu IU, Wang J, Su C, Chang R, Lam TT, Gopal PP, Ginsberg SD, Zhao H, Hafler DA, Chandra SS, Zhang L"
+    venue: "Science Translational Medicine"
+    cite: "16(771):eabo1997"
+    doi: "10.1126/scitranslmed.abo1997"
+    pmid: "39475571"
+    status: published
+
+  - year: 2023
+    title: "α-Synuclein colocalizes with AP180 and affects the size of clathrin lattices"
+    authors: "Vargas KJ, Colosi PL, Girardi E, Park JM, Harmon LE, Chandra SS"
+    venue: "Journal of Biological Chemistry"
+    cite: "299(9):105091"
+    doi: "10.1016/j.jbc.2023.105091"
+    pmid: "37516240"
+    status: published
+
+  - year: 2026
+    title: "Tissue-restricted DNA methylation remodeling in a Lmna G609G progeria mouse"
+    authors: "Park JM, et al., Laird PW"
+    venue: "manuscript in preparation"
+    status: in-prep           # TODO verify title/author line before sharing widely
+
+# ── Talks & posters ─────────────────────────────────────────────────────
+#  date: YYYY-MM or YYYY-MM-DD.   type: talk | poster | invited
+#  slug: optional — gives a deep link  https://baczemin.github.io/#talks/<slug>
+#        Put that link in the QR code on that talk's slides.
+#  links: optional list of { label, url }  (slides, repo, abstract …)
+talks:
+  - date: 2026-10-01
+    type: talk
+    title: "Graduate Student Seminar Series"
+    venue: "Van Andel Institute"
+    slug: gsss2026
+
+  - date: 2026-08-11
+    type: talk
+    slug: bioc2026
+    title: "From p-values to posterior probabilities: a Bayesian workflow for region-specific DNA methylation analysis"
+    venue: "Bioconductor Conference 2026 (BioC2026)"
+    abstract: |
+      Why I stopped reporting p-values for DNA methylation. BREAD returns
+      posterior probabilities of change per region, effect sizes with
+      uncertainty, and an explicit call for regions that did not change.
+    links:
+      - { label: "BREAD docs", url: "https://baczemin.github.io/BREAD/" }
+      - { label: "repo",       url: "https://github.com/BacZemin/BREAD" }
+
+  - date: 2026-06-14
+    type: poster
+    slug: grc2026
+    title: "Poster presentation"                                 # TODO add poster title
+    venue: "Gordon Research Conference: Biology of Aging"
+
+  - date: 2026-05-11
+    type: poster
+    slug: vai-epi-2026
+    title: "Poster presentation"                                 # TODO add poster title
+    venue: "VAI Epigenetics Symposium"
+
+  - date: 2026-02-21
+    type: talk
+    title: "Invited presentation"                                # TODO add talk title
+    venue: "Rare Disease Consortium"
+
+  - date: 2025-10-29
+    type: poster
+    slug: prf2025
+    title: "Investigating DNA methylation aberrations in HGPS"
+    venue: "Progeria Research Foundation Scientific Workshop"
+
+  - date: 2025-10-15
+    type: poster
+    slug: epigenetics-society-2025
+    title: "Interpretable deep learning for the next generation of epigenetic clocks and mechanistic discovery"
+    venue: "Epigenetics Society International Conference 2025"
+    award: "Travel Fellowship"
+
+  - date: 2025-06
+    type: talk
+    slug: bioc2025
+    title: "Leveraging deep-learning epigenetic clocks on {torch}"
+    venue: "Bioconductor Conference 2025 (BioC2025)"
+    links:
+      - { label: "repo", url: "https://github.com/BacZemin/Bioc2025_torch_clock" }
+
+  - date: 2024-02-24
+    type: poster
+    title: "Reactivation of retrotransposable elements in HGPS"
+    venue: "Rare disease symposium"                              # TODO verify venue name
+
+  - date: 2023-08
+    type: talk
+    slug: bioc2023
+    title: "Injecting rigor and reproducibility into CITE-seq workflows: decontamination and in silico gating"
+    venue: "Bioconductor Conference 2023 (BioC2023)"
+
+# ── Experience & education ──────────────────────────────────────────────
+experience:
+  - when: "2022 – present"
+    what: "PhD Candidate"
+    where: "Van Andel Institute Graduate School · Laird Lab"
+    note: "Epigenetic aging in Hutchinson-Gilford Progeria Syndrome"
+  - when: "2020 – 2022"
+    what: "Post-baccalaureate Research Associate"
+    where: "Yale University · Chandra Lab"
+    note: "Multi-omic profiling of Parkinson's disease brains and mouse models"
+  - when: "2013 – 2020"                                          # TODO verify — CV says Sept 2013 – Dec 2020, which overlaps the Yale start
+    what: "B.A. Neuroscience & Religious Studies"
+    where: "Franklin & Marshall College · Jinks Lab"
+    note: "Dendrite morphology in a rare lissencephaly of Lancaster Amish children"
+
+awards:
+  - { year: 2025, what: "Travel Fellowship, Epigenetics Society International Conference" }
+  - { year: 2023, what: "VAIGS Travel Allowance" }              # TODO verify name
+
+# ── Skills (btop-style meters) ──────────────────────────────────────────
+#  level: 0–100 (how full the meter is; it's a vibe, not a test score)
+skills:
+  - group: "DNA methylation"
+    level: 95
+    items: [EPIC / EPICv2, MM285, WGBS, 5mC/5hmC (duet evoC), scDEEP-mC, SeSAMe, epigenetic clocks]
+  - group: "Chromatin & 3D genome"
+    level: 85
+    items: [Hi-C, compartments, Chrom3D, CUT&Tag, ChIP-seq, ATAC-seq, footprinting]
+  - group: "Transcriptomics"
+    level: 85
+    items: [bulk RNA-seq, scRNA / snRNA-seq, CITE-seq, transposable elements, spatial (Xenium, G4X)]
+  - group: "Proteomics"
+    level: 65
+    items: [DIA-NN, shotgun MS, differential abundance]
+  - group: "Structural biology"
+    level: 70
+    items: [AlphaFold3, Chai-1, Boltz-2, FlexPepDock, interface scoring]
+  - group: "Statistics & ML"
+    level: 85
+    items: [Bayesian (brms / Stan), R torch, GNNs, SHAP, mixed models]
+  - group: "Computing"
+    level: 90
+    items: [R / Bioconductor, Python, Nextflow / nf-core, SLURM HPC, git, Quarto]
+  - group: "Wet lab"
+    level: 75
+    items: [CRISPR knock-in design, lentiviral systems, primary cell culture, IF / high-content imaging, histology, TEM, Western, RT-qPCR]

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" data-theme="tokyo-night">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 · Jaemin (Jamie) Park</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="/assets/img/logo.png">
+  <script>try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+  <link rel="stylesheet" href="/assets/css/themes.css">
+  <link rel="stylesheet" href="/assets/css/tui.css">
+  <style>
+    body { overflow: auto; display: grid; place-items: center; min-height: 100vh; padding: 16px; }
+    .pane { max-width: 560px; width: 100%; }
+  </style>
+</head>
+<body>
+  <section class="pane focused" aria-label="not found">
+    <div class="pane-title">zsh — 404</div>
+    <p><span class="c-green">jamie</span>@<span class="c-accent2">vai</span> <span class="c-accent">~</span> ❯ cd <span id="p"></span></p>
+    <p class="c-red">cd: no such file or directory</p>
+    <p class="muted">The page you were looking for doesn't exist (or moved).</p>
+    <div class="actions"><a class="chip primary" href="/">← cd ~</a><a class="chip" href="/#pubs">publications</a><a class="chip" href="/#talks">talks</a></div>
+  </section>
+  <script>document.getElementById('p').textContent = location.pathname;</script>
+</body>
+</html>

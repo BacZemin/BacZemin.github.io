@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en" data-theme="tokyo-night">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Jaemin (Jamie) Park</title>
+  <meta name="description" content="Jaemin (Jamie) Park — PhD candidate at the Van Andel Institute (Laird Lab). Computational epigenomics of aging and Hutchinson-Gilford Progeria Syndrome: DNA methylation, 3D chromatin, epigenetic clocks, Bayesian methods.">
+  <meta name="author" content="Jaemin Park">
+  <link rel="canonical" href="https://baczemin.github.io/">
+  <meta name="theme-color" content="#1a1b26">
+  <link rel="icon" type="image/png" href="assets/img/logo.png">
+
+  <!-- Open Graph / social cards (what shows up when the link is shared) -->
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="Jaemin (Jamie) Park">
+  <meta property="og:description" content="Computational epigenomics of aging and progeria · Van Andel Institute">
+  <meta property="og:url" content="https://baczemin.github.io/">
+  <meta property="og:image" content="https://baczemin.github.io/assets/img/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@BacZemin">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Jaemin Park",
+    "alternateName": "Jamie Park",
+    "jobTitle": "PhD Candidate",
+    "affiliation": { "@type": "Organization", "name": "Van Andel Institute" },
+    "url": "https://baczemin.github.io/",
+    "identifier": "https://orcid.org/0000-0002-9770-7197",
+    "sameAs": [
+      "https://orcid.org/0000-0002-9770-7197",
+      "https://github.com/BacZemin",
+      "https://x.com/BacZemin"
+    ],
+    "knowsAbout": ["DNA methylation", "Epigenetics", "Hutchinson-Gilford Progeria Syndrome", "Epigenetic clocks", "Bioinformatics", "Hi-C", "Bayesian statistics"]
+  }
+  </script>
+
+  <!-- Apply the saved theme before first paint (no flash) -->
+  <script>
+    try {
+      // ?theme=rose-pine-dawn in the URL forces a theme (handy for projectors)
+      var t = new URLSearchParams(location.search).get('theme') || localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: light)').matches ? 'rose-pine-dawn' : 'tokyo-night';
+      document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  </script>
+
+  <link rel="preload" href="assets/fonts/jetbrains-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/themes.css">
+  <link rel="stylesheet" href="assets/css/tui.css">
+</head>
+<body>
+  <a class="skip" href="#desktop">skip to content</a>
+
+  <!-- ───────────── waybar ───────────── -->
+  <header class="bar" role="banner">
+    <nav class="bar-left" aria-label="Workspaces">
+      <span class="bar-logo" aria-hidden="true">◆</span>
+      <div class="ws-pills" id="ws-pills"></div>
+    </nav>
+    <div class="bar-center" id="bar-path">jamie@vai: ~</div>
+    <div class="bar-right">
+      <button class="bar-btn" id="btn-qr" title="QR code for this page (q)" aria-label="Show QR code">▣ qr</button>
+      <button class="bar-btn" id="btn-theme" title="Cycle theme (t)" aria-label="Change theme">◐ <span id="theme-name">tokyo-night</span></button>
+      <button class="bar-btn" id="btn-help" title="Keyboard shortcuts (?)" aria-label="Keyboard shortcuts">?</button>
+      <span class="bar-clock" id="bar-clock" aria-hidden="true">--:--</span>
+    </div>
+  </header>
+
+  <!-- ───────────── workspaces (filled by app.js from site.yaml) ───────────── -->
+  <main id="desktop" tabindex="-1">
+    <div class="boot" id="boot">
+      <pre>[  0.000] loading site.yaml …</pre>
+    </div>
+
+    <noscript>
+      <div class="noscript">
+        <h1>Jaemin (Jamie) Park</h1>
+        <p>PhD Candidate, Laird Lab, Van Andel Institute Graduate School (Grand Rapids, MI).
+           Computational epigenomics of aging and Hutchinson-Gilford Progeria Syndrome: DNA methylation,
+           3D chromatin, epigenetic clocks and Bayesian methods.</p>
+        <p><a href="mailto:jaemin.park@vai.org">jaemin.park@vai.org</a> ·
+           <a href="https://orcid.org/0000-0002-9770-7197">ORCID</a> ·
+           <a href="https://github.com/BacZemin">GitHub</a> ·
+           <a href="assets/cv.pdf">CV (PDF)</a> ·
+           <a href="site.yaml">full content (site.yaml)</a></p>
+        <p>This site is an interactive terminal; enable JavaScript for the full experience.</p>
+      </div>
+    </noscript>
+  </main>
+
+  <!-- ───────────── overlays ───────────── -->
+  <div class="overlay" id="palette" hidden>
+    <div class="modal palette" role="dialog" aria-modal="true" aria-label="Command palette">
+      <div class="pane-title">walker</div>
+      <input id="palette-input" type="text" placeholder="type a command, project, paper…" autocomplete="off" spellcheck="false" aria-label="Search commands">
+      <ul id="palette-list" role="listbox"></ul>
+    </div>
+  </div>
+
+  <div class="overlay" id="help" hidden>
+    <div class="modal help" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+      <div class="pane-title">keybindings</div>
+      <dl class="keys">
+        <dt><kbd>1</kbd>–<kbd>6</kbd></dt><dd>switch workspace</dd>
+        <dt><kbd>Tab</kbd> / <kbd>h</kbd> <kbd>l</kbd></dt><dd>focus next / previous pane</dd>
+        <dt><kbd>j</kbd> <kbd>k</kbd> / <kbd>↑</kbd> <kbd>↓</kbd></dt><dd>move through a list</dd>
+        <dt><kbd>Enter</kbd></dt><dd>open the selected item</dd>
+        <dt><kbd>/</kbd></dt><dd>search publications</dd>
+        <dt><kbd>:</kbd> or <kbd>Ctrl</kbd>+<kbd>K</kbd></dt><dd>command palette</dd>
+        <dt><kbd>t</kbd></dt><dd>cycle theme</dd>
+        <dt><kbd>q</kbd></dt><dd>QR code for this page</dd>
+        <dt><kbd>`</kbd></dt><dd>jump to the shell</dd>
+        <dt><kbd>Esc</kbd></dt><dd>close</dd>
+      </dl>
+      <p class="muted">Everything also works by tapping.</p>
+    </div>
+  </div>
+
+  <div class="overlay" id="qr" hidden>
+    <div class="modal qr" role="dialog" aria-modal="true" aria-label="QR code">
+      <div class="pane-title">qr</div>
+      <div id="qr-code" class="qr-code"></div>
+      <div class="qr-url" id="qr-url"></div>
+      <div class="qr-actions">
+        <button class="chip" id="qr-dl-theme">↓ svg (theme)</button>
+        <button class="chip" id="qr-dl-mono">↓ svg (black)</button>
+        <button class="chip" id="qr-dl-png">↓ png</button>
+        <button class="chip" id="qr-copy">copy link</button>
+      </div>
+      <p class="muted small">Tip: open a talk first (e.g. <code>#talks/bioc2026</code>) to make a QR that lands on that talk.</p>
+    </div>
+  </div>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <script src="vendor/js-yaml.min.js"></script>
+  <script src="vendor/qrcode.min.js"></script>
+  <script src="assets/js/term.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
