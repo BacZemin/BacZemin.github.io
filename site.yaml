@@ -54,6 +54,9 @@ profile:
     - "BREAD: Bayesian region-level DNA methylation inference in R"
     # - "Open to conversations about postdoc positions"                 # uncomment if true
   avatar: "assets/img/logo.png"
+  # Headshot shown as the fastfetch "logo" (dithered; hover/tap reveals the real photo).
+  # Leave empty ("") to show the ASCII DNA helix instead.
+  photo: "assets/img/photos/headshot.jpg"
   cv: "assets/cv.pdf"
 
 links:
@@ -63,9 +66,26 @@ links:
   - { label: "scholar", url: "https://scholar.google.com/citations?user=2zQQGScAAAAJ", text: "Google Scholar" }   # TODO verify this is your profile
   - { label: "x",       url: "https://x.com/BacZemin",                     text: "@BacZemin" }
 
+# ── Photos (home page gallery) ─────────────────────────────────────────
+#  Put image files in assets/img/photos/ (JPEG, ~1400px on the long side, < 400 KB).
+#  Shown dithered; hover/tap reveals the colour photo; click opens it full size.
+gallery:
+  - src: "assets/img/photos/laird-lab-2025.jpg"
+    caption: "Laird Lab, 2025"
+    alt: "Group photo of the Laird Lab on the lawn outside the Van Andel Institute, 2025"
+  - src: "assets/img/photos/laird-lab-2023.jpg"
+    caption: "Laird Lab, 2023"
+    alt: "Group photo of the Laird Lab outside the Van Andel Institute, 2023"
+    credit: "Van Andel Institute"                                  # TODO verify photo credit
+  - src: "assets/img/photos/faseb-methylation-2024.jpg"
+    caption: "FASEB Biological Methylation conference, Porto, 2024"
+    alt: "Conference group photo of attendees on a staircase, FASEB Biological Methylation 2024, Porto"
+
 # ── Research projects ───────────────────────────────────────────────────
 #  kind: thesis | software | side
 #  links: optional list of { label, url }
+#  image: optional figure shown in the preview pane, e.g.
+#    image: { src: "assets/img/science/bread-posterior.png", caption: "Posterior probability of change per region" }
 projects:
   - id: hgps-vivo
     title: "Progeria in vivo methylome"
@@ -204,6 +224,7 @@ publications:
 #  slug: optional — gives a deep link  https://baczemin.github.io/#talks/<slug>
 #        Put that link in the QR code on that talk's slides.
 #  links: optional list of { label, url }  (slides, repo, abstract …)
+#  image: optional { src, caption } — a poster thumbnail or a key figure
 talks:
   - date: 2026-10-01
     type: talk

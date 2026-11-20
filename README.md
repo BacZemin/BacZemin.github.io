@@ -14,7 +14,8 @@ No build step, no npm, no framework. It is static HTML, CSS and JS, and all the 
    - **New paper** goes under `publications:`. Set `status: published | preprint | in-prep | submitted`. Your name (`Park JM`) is highlighted automatically.
    - **New talk or poster** goes under `talks:`. Give it a `slug:` to get a deep link (see QR codes below).
    - **New project or package** goes under `projects:`, with `kind: thesis | software | side`.
-   - **Bio, tagline, "now" list** live under `profile:`.
+   - **Bio, tagline, "now" list, headshot** live under `profile:` (`photo:`).
+   - **Photos** go under `gallery:`. Put the JPEG in `assets/img/photos/` (~1400px long side, under 400 KB). Projects and talks can take an `image:` too.
    - **Skills** live under `skills:`. `level` (0–100) sets how full the btop meter is.
 2. Preview it locally:
    ```bash

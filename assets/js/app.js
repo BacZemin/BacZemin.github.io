@@ -69,6 +69,7 @@
     d.experience = d.experience || [];
     d.awards = d.awards || [];
     d.skills = d.skills || [];
+    d.gallery = (d.gallery || []).filter((g) => g && g.src);
     return d;
   }
 
@@ -144,7 +145,8 @@
       const fetch = `
         <h1 class="hero">${esc(p.name)}<small>${esc(p.role)} · ${esc(p.org)}</small></h1>
         <div class="fetch">
-          <pre class="helix" id="helix" aria-hidden="true" title="a rotating DNA helix; yellow C's are methylated CpGs"></pre>
+          ${p.photo ? photoFig({ src: p.photo, alt: `Photo of ${p.name}` }, 'headshot', '4/5', 'onerror')
+            : `<pre class="helix" id="helix" aria-hidden="true" title="a rotating DNA helix; yellow C's are methylated CpGs"></pre>`}
           <div class="fetch-info">
             <div class="who"><span class="u">${esc(p.short || 'me')}</span>@<span class="h">${esc(p.host || 'lab')}</span></div>
             <div class="rule">${'─'.repeat(40)}</div>
@@ -165,6 +167,7 @@
         ${p.cv ? `<li><span class="k">cv</span><a href="${esc(p.cv)}" target="_blank" rel="noopener">cv.pdf</a></li>` : ''}</ul>${now}`;
       return pane('p-fetch', 'fastfetch', fetch) +
         pane('p-bio', '~/bio.md', `<div class="md">${md(p.bio)}</div>`) +
+        (S.gallery.length ? pane('p-photos', '~/photos', renderGallery(), 'hover · click') : '') +
         pane('p-links', '~/.contact', links) +
         pane('p-log', 'journalctl --user -r', renderLog());
     },
@@ -264,6 +267,7 @@
       <div class="meta">${esc(p.kind || '')}${p.years ? ' · ' + esc(p.years) : ''}</div>
       <p>${esc(p.summary || '')}</p>
       ${p.detail ? md(p.detail) : ''}
+      ${figBlock(p.image)}
       ${p.tags ? `<div class="tags">${p.tags.map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div>` : ''}
       ${links ? `<div class="actions">${links}</div>` : ''}`;
   }
@@ -275,9 +279,104 @@
       <div class="meta">${esc(t.venue)}<br>${esc(t.date)} · ${esc(t.type || 'talk')}</div>
       ${t.award ? `<div class="award">★ ${esc(t.award)}</div>` : ''}
       ${t.abstract ? md(t.abstract) : ''}
+      ${figBlock(t.image)}
       <div class="actions">${links}
         <button class="chip" data-act="qr">▣ qr for this ${esc(t.type || 'talk')}</button>
       </div>`;
+  }
+
+  // ── photos: dithered canvas + real image revealed on hover/tap ───
+  //  aspect: crop ratio like '3/2' ('' = keep the photo's own shape)
+  function photoFig(ph, cls = '', aspect = '', fallback = '') {
+    const style = aspect ? ` style="aspect-ratio:${aspect}"` : '';
+    return `<figure class="photo ${cls}" data-aspect="${esc(aspect)}"${fallback ? ' data-fallback="helix"' : ''}${style} tabindex="0">
+      <canvas aria-hidden="true"></canvas>
+      <img class="real" src="${esc(ph.src)}" alt="${esc(ph.alt || ph.caption || '')}" decoding="async">
+    </figure>`;
+  }
+  function figBlock(im) {
+    if (!im) return '';
+    if (typeof im === 'string') im = { src: im };
+    return `<div class="fig">${photoFig(im, 'science')}${im.caption ? `<div class="cap">${esc(im.caption)}</div>` : ''}</div>`;
+  }
+  function renderGallery() {
+    return `<div class="gallery">${S.gallery.map((g, i) => `<button class="thumb" data-lightbox="${i}" aria-label="Open photo: ${esc(g.caption || g.alt || '')}">
+        ${photoFig(g, '', '3/2').replace(' tabindex="0"', '')}<span class="cap">${esc(g.caption || '')}</span></button>`).join('')}</div>`;
+  }
+
+  const hexRgb = (h) => { h = h.replace('#', ''); if (h.length === 3) h = [...h].map((c) => c + c).join(''); const n = parseInt(h, 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+  const lum = ([r, g, b]) => 0.299 * r + 0.587 * g + 0.114 * b;
+
+  function dither(fig) {
+    const img = fig.querySelector('img.real'), cv = fig.querySelector('canvas');
+    if (!img || !cv) return;
+    const run = () => {
+      if (!img.naturalWidth) return;
+      const cell = fig.closest('.thumb') ? 1.5 : 2;                       // screen px per dither dot
+      const box = fig.getBoundingClientRect().width || 240;
+      const w = Math.max(48, Math.round(box / cell));
+      const [aw, ah] = (fig.dataset.aspect || '').split('/').map(Number);
+      const ratio = aw && ah ? ah / aw : img.naturalHeight / img.naturalWidth;
+      const h = Math.round(w * ratio);
+      cv.width = w; cv.height = h;
+      const g = cv.getContext('2d', { willReadFrequently: true });
+      // centre-crop the source to the target aspect (same as object-fit: cover)
+      const sr = img.naturalHeight / img.naturalWidth;
+      let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
+      if (sr > ratio) { sh = sw * ratio; sy = (img.naturalHeight - sh) * (fig.classList.contains('headshot') ? 0.25 : 0.5); }
+      else { sw = sh / ratio; sx = (img.naturalWidth - sw) / 2; }
+      g.drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
+      const data = g.getImageData(0, 0, w, h), px = data.data;
+      // luminance + auto-levels so dark or washed-out photos still dither nicely
+      const Lm = new Float32Array(w * h);
+      let lo = 255, hi = 0;
+      for (let k = 0; k < Lm.length; k++) { const v = lum([px[4 * k], px[4 * k + 1], px[4 * k + 2]]); Lm[k] = v; if (v < lo) lo = v; if (v > hi) hi = v; }
+      const span = Math.max(1, hi - lo);
+      for (let k = 0; k < Lm.length; k++) Lm[k] = Math.min(1, Math.max(0, ((Lm[k] - lo) / span - 0.5) * 1.12 + 0.52));
+      // Atkinson dithering (classic Macintosh look): diffuses 6/8 of the error, keeps faces readable
+      const ink = hexRgb(cssVar('--fg')), paper = hexRgb(cssVar('--pane'));
+      const [bright, dark] = lum(ink) > lum(paper) ? [ink, paper] : [paper, ink];
+      const spread = [[1, 0], [2, 0], [-1, 1], [0, 1], [1, 1], [0, 2]];
+      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+        const k = y * w + x, old = Lm[k], on = old > 0.5 ? 1 : 0, err = (old - on) / 8;
+        for (const [dx, dy] of spread) { const xx = x + dx, yy = y + dy; if (xx >= 0 && xx < w && yy < h) Lm[yy * w + xx] += err; }
+        const c = on ? bright : dark;
+        px[4 * k] = c[0]; px[4 * k + 1] = c[1]; px[4 * k + 2] = c[2]; px[4 * k + 3] = 255;
+      }
+      g.putImageData(data, 0, 0);
+      fig.classList.add('ready');
+    };
+    const fail = () => {
+      // missing headshot → fall back to the ASCII helix
+      if (fig.dataset.fallback === 'helix') {
+        fig.outerHTML = `<pre class="helix" id="helix" aria-hidden="true"></pre>`;
+        startHelix();
+      } else fig.classList.add('broken');
+    };
+    if (img.complete) { img.naturalWidth ? run() : fail(); }
+    else {
+      img.addEventListener('load', run, { once: true });
+      img.addEventListener('error', fail, { once: true });
+    }
+  }
+  const ditherIn = (root) => $$('.photo', root).forEach(dither);
+
+  // tap to reveal on touch screens (hover does it on desktop)
+  document.addEventListener('click', (e) => {
+    const f = e.target.closest('.photo'); if (!f || f.closest('.thumb')) return;
+    f.classList.toggle('revealed');
+  });
+
+  // ── lightbox ─────────────────────────────────────────────────────
+  let lbIndex = 0;
+  function lightbox(i) {
+    const n = S.gallery.length; if (!n) return;
+    lbIndex = (i + n) % n;
+    const g = S.gallery[lbIndex];
+    $('#lb-img').src = g.src; $('#lb-img').alt = g.alt || g.caption || '';
+    $('#lb-cap').innerHTML = `${esc(g.caption || '')}${g.credit ? ` <span class="muted">· photo: ${esc(g.credit)}</span>` : ''}`;
+    $('#lb-count').textContent = `${lbIndex + 1}/${n}`;
+    openOverlay('lightbox');
   }
 
   function renderPubStats() {
@@ -368,6 +467,7 @@
       if (on && !fromClick) r.scrollIntoView({ block: 'nearest' });
     });
     $(`#${kind}-preview`).innerHTML = kind === 'research' ? projectDetail(arr[i]) : talkDetail(arr[i]);
+    ditherIn($(`#${kind}-preview`));
     const sub = arr[i].id;
     const h = `#${kind}/${sub}`;
     if (location.hash !== h) history.replaceState(null, '', location.pathname + location.search + h);
@@ -414,6 +514,7 @@
     setFocus(0);
     if (isNarrow()) window.scrollTo(0, 0);
     if (ws === 'skills') animateMeters();
+    requestAnimationFrame(() => ditherIn($(`.ws[data-ws="${ws}"]`)));
     if (ws === 'shell' && !isCoarse()) setTimeout(() => $('#term input')?.focus(), 30);
     document.title = ws === 'about' ? S.profile.name : `${ws} · ${S.profile.name}`;
   }
@@ -456,6 +557,7 @@
     const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
     $('meta[name="theme-color"]').setAttribute('content', bg);
     if (announce) toast('theme', name);
+    if (S) ditherIn(document);
     if (!$('#qr').hidden) showQR();
   }
   const cycleTheme = (d = 1) => applyTheme(THEMES[(THEMES.indexOf(document.documentElement.dataset.theme) + d + THEMES.length) % THEMES.length]);
@@ -617,6 +719,10 @@
     $('#btn-help').onclick = () => openOverlay('help');
     $('#btn-qr').onclick = showQR;
     bindQR();
+    document.addEventListener('click', (e) => { const t = e.target.closest('[data-lightbox]'); if (t) lightbox(Number(t.dataset.lightbox)); });
+    $('#lb-prev').onclick = () => lightbox(lbIndex - 1);
+    $('#lb-next').onclick = () => lightbox(lbIndex + 1);
+    let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => ditherIn($('.ws.active')), 200); });
     $$('.overlay').forEach((o) => o.addEventListener('mousedown', (e) => { if (e.target === o) closeOverlays(); }));
     $('#palette-input').addEventListener('input', paletteFilter);
     $('#palette-list').addEventListener('click', (e) => { const li = e.target.closest('li[data-i]'); if (li) paletteRun(Number(li.dataset.i)); });
@@ -629,6 +735,8 @@
     document.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); overlayOpen() ? closeOverlays() : openOverlay('palette'); return; }
       if (e.key === 'Escape') { if (overlayOpen()) { closeOverlays(); return; } document.activeElement?.blur(); return; }
+      if (!$('#lightbox').hidden && (e.key === 'ArrowRight' || e.key === 'l')) { lightbox(lbIndex + 1); return; }
+      if (!$('#lightbox').hidden && (e.key === 'ArrowLeft' || e.key === 'h')) { lightbox(lbIndex - 1); return; }
       if (overlayOpen()) return;
       const tag = (e.target.tagName || '').toLowerCase();
       if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
